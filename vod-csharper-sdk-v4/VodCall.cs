@@ -289,8 +289,8 @@ namespace VodCallV4
         private string GetReqExSign()
         {
             string strContent = "";
-            strContent += ("s=" + (m_strSecId));
-            strContent += ("&f=" + m_strFileName);
+            strContent += ("s=" + Uri.EscapeDataString((m_strSecId)));
+            strContent += ("&f=" + Uri.EscapeDataString(m_strFileName));
             strContent += ("&t=" + GetIntTimeStamp());
             strContent += ("&ft=" + m_strFileType);
             strContent += ("&e=" + (GetIntTimeStamp() + 3600*24*2));
@@ -333,7 +333,6 @@ namespace VodCallV4
             strContex += arrKeys[arrKeys.Count() - 1];
             strContex += "=";
             strContex += dicVals[arrKeys[arrKeys.Count() - 1]];
-            System.Console.WriteLine(strContex);
             return hash_hmac(strContex, m_strSecKey);
         }
 
@@ -363,6 +362,7 @@ namespace VodCallV4
                 reqStr += key + '=' + Uri.EscapeDataString(mapVals[key].ToString());
             }
             reqStr += ("&" + "Signature=" + Uri.EscapeDataString(strSign));
+            Console.WriteLine("https://"+reqStr);
             return "https://" + m_strReqHost + m_strReqPath + reqStr;
         }
         private int GeneratePartInfo()
